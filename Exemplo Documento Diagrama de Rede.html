@@ -1,0 +1,149 @@
+<html><head><style>body {
+   color: black;
+}
+</style></head><body><h1 id="guia-de-configura-o-c-lula-rob-tica-da-linha-01">Guia de Configuração: Célula Robótica da Linha 01</h1>
+<p><strong>ID do Documento:</strong> CFG-OT-CEL01-V1.0
+<strong>Proprietário:</strong> Equipe de Automação Industrial
+<strong>Data da Última Revisão:</strong> 24/1git status0/2023
+<strong>Versão DBA:</strong> 1.0</p>
+<!-- 
+Nota para editores:
+Este documento descreve o estado inicial da rede. Qualquer alteração futura deve
+ser registrada no Histórico de Revisão no final do arquivo.
+-->
+<h2 id="1-vis-o-geral-e-arquitetura">1. Visão Geral e Arquitetura</h2>
+<p>Este documento detalha a instalação e configuração de rede dos componentes da <strong>Célula Robótica da Linha 01</strong>. O objetivo desta célula é automatizar o processo de montagem de componentes eletrônicos.</p>
+<p>A arquitetura de rede é simples e isolada, consistindo em um CLP, uma IHM e um Robô conectados a um switch de acesso dedicado para garantir a comunicação de baixa latência e alta confiabilidade entre os dispositivos.</p>
+<h3 id="1-1-diagrama-de-rede-l-gico">1.1 Diagrama de Rede Lógico</h3>
+<p><img src="caminho/para/diagrama_celula_01.png" alt="Diagrama de Rede da Célula Robótica Linha 01">
+<em>(Nota: Substitua &quot;caminho/para/diagrama_celula_01.png&quot; pelo caminho real da imagem do diagrama criado com diagrams.net)</em></p>
+<hr>
+<h2 id="2-configura-o-de-hardware">2. Configuração de Hardware</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Componente</th>
+<th style="text-align:left">Modelo/Tipo</th>
+<th style="text-align:left">Função na Célula</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Switch</td>
+<td style="text-align:left">Cisco 2960</td>
+<td style="text-align:left">Ponto central de comunicação de rede.</td>
+</tr>
+<tr>
+<td style="text-align:left">CLP</td>
+<td style="text-align:left">PC Genérico (Sim.)</td>
+<td style="text-align:left">Controla a lógica do processo.</td>
+</tr>
+<tr>
+<td style="text-align:left">IHM</td>
+<td style="text-align:left">PC Genérico (Sim.)</td>
+<td style="text-align:left">Interface de operação e visualização.</td>
+</tr>
+<tr>
+<td style="text-align:left">Robô</td>
+<td style="text-align:left">PC Genérico (Sim.)</td>
+<td style="text-align:left">Executa a montagem física.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="3-configura-o-de-rede">3. Configuração de Rede</h2>
+<p>A rede da Célula 01 utiliza a sub-rede <strong>192.168.10.0/24</strong>. Todos os endereços IP dos ativos de controle são configurados estaticamente para garantir a previsibilidade da comunicação.</p>
+<h3 id="3-1-tabela-de-endere-amento-ip">3.1 Tabela de Endereçamento IP</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Hostname</th>
+<th style="text-align:left">Endereço IP</th>
+<th style="text-align:left">Máscara de Sub-rede</th>
+<th style="text-align:left">Endereço MAC (Coletado)</th>
+<th style="text-align:left">Porta do Switch</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">CLP-LINHA-01</td>
+<td style="text-align:left">192.168.10.10</td>
+<td style="text-align:left">255.255.255.0</td>
+<td style="text-align:left"><code>0001.C9E8.D401</code></td>
+<td style="text-align:left">FastEthernet0/1</td>
+</tr>
+<tr>
+<td style="text-align:left">IHM-LINHA-01</td>
+<td style="text-align:left">192.168.10.11</td>
+<td style="text-align:left">255.255.255.0</td>
+<td style="text-align:left"><code>00D0.D326.3F01</code></td>
+<td style="text-align:left">FastEthernet0/2</td>
+</tr>
+<tr>
+<td style="text-align:left">ROBO-LINHA-01</td>
+<td style="text-align:left">192.168.10.12</td>
+<td style="text-align:left">255.255.255.0</td>
+<td style="text-align:left"><code>00E0.F7A8.1401</code></td>
+<td style="text-align:left">FastEthernet0/3</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-2-configura-o-do-switch-sw-celula-01-">3.2 Configuração do Switch (SW-CELULA-01)</h3>
+<p>A configuração do switch é mantida no mínimo para simplicidade e segurança. Abaixo estão os logs de verificação que confirmam a conectividade dos dispositivos.</p>
+<p><strong>Tabela de Endereços MAC do Switch:</strong>
+```text
+// Saída do comando &quot;show mac address-table&quot; no Packet Tracer</p>
+<h2 id="mac-address-table">Mac Address Table</h2>
+<p>Vlan    Mac Address       Type        Ports</p>
+<hr>
+<p>   1    0001.c9e8.d401    DYNAMIC     Fa0/1
+   1    00d0.d326.3f01    DYNAMIC     Fa0/2
+   1    00e0.f7a8.1401    DYNAMIC     Fa0/3</p>
+<h2 id="4-procedimento-de-valida-o">4. Procedimento de Validação</h2>
+<p>A conectividade da rede foi validada após a configuração inicial.</p>
+<p><strong>Teste de Conectividade (Ping):</strong>
+Foi executado um teste de ping da IHM (<code>192.168.10.11</code>) para o CLP (<code>192.168.10.10</code>) para validar a comunicação.</p>
+<p>```text
+// Cole aqui a saída do seu comando ping
+Pinging 192.168.10.10 with 32 bytes of data:
+Reply from 192.168.10.10: bytes=32 time&lt;1ms TTL=128
+...</p>
+<p>Justificativa: A taxa de 0% de perda de pacotes confirma que a configuração da camada 3 (IP) está funcional entre os dispositivos da célula.</p>
+<hr>
+<h3 id="-5-hist-rico-de-revis-o-"><strong>5. Histórico de Revisão</strong></h3>
+<p><strong>Por que incluir?</strong>
+Documentos técnicos são &quot;vivos&quot;. Eles mudam à medida que o sistema evolui (atualizações de firmware, troca de um dispositivo, mudança de IP, etc.). O Histórico de Revisão é o log de todas essas mudanças.</p>
+<ul>
+<li><strong>Rastreabilidade:</strong> Permite que qualquer pessoa veja o que mudou, quando mudou e quem fez a mudança. Isso é fundamental para entender a evolução do sistema.</li>
+<li><strong>Controle de Mudanças:</strong> Funciona como um registro formal do processo de gerenciamento de mudanças. Cada alteração no sistema deve resultar em uma nova entrada nesta tabela.</li>
+<li><strong>Segurança:</strong> Se uma mudança introduziu um problema de segurança, o histórico ajuda a identificar rapidamente qual foi a alteração e quem a realizou.</li>
+</ul>
+<p><strong>Como incluir no Markdown:</strong>
+A forma mais clara é usar uma tabela, exatamente como no exemplo. Ela geralmente fica no final do documento. A primeira entrada é sempre a &quot;Criação inicial do documento&quot;. Cada alteração subsequente adiciona uma nova linha.</p>
+<p>```markdown</p>
+<h2 id="5-hist-rico-de-revis-o">5. Histórico de Revisão</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Versão</th>
+<th style="text-align:left">Data</th>
+<th style="text-align:left">Autor</th>
+<th style="text-align:left">Descrição da Mudança</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">1.0</td>
+<td style="text-align:left">24/10/2023</td>
+<td style="text-align:left">[Seu Nome]</td>
+<td style="text-align:left">Criação inicial do documento.</td>
+</tr>
+<tr>
+<td style="text-align:left">1.1</td>
+<td style="text-align:left">28/11/2023</td>
+<td style="text-align:left">J. Silva</td>
+<td style="text-align:left">Atualizado IP do Robô de .12 para .15 devido a conflito.</td>
+</tr>
+</tbody>
+</table>
+</body></html>
